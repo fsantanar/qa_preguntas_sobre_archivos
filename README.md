@@ -7,6 +7,14 @@ Forma parte de un prototipo funcional desarrollado para un proyecto interno, y s
 
 ---
 
+## Diagrama de flujo general
+
+El siguiente diagrama muestra de forma resumida el flujo de funcionamiento de la herramienta:
+
+![Flujo general](docs/imagenes/flujo_general.png)
+
+---
+
 ## Flujo general y scripts
 
 El sistema sigue un pipeline de 6 pasos, más dos modos de aplicación para hacer consultas (local y vía navegador):
