@@ -79,6 +79,7 @@ El sistema sigue un pipeline de 6 pasos, más dos modos de aplicación para hace
 
 ## Estructura del repositorio
 
+```plaintext
 qa_presentaciones_llm_demo/
 ├── paso01_extraer_texto_de_ppts.py
 ├── paso02_borra_imagenes_repetidas.py
@@ -91,6 +92,9 @@ qa_presentaciones_llm_demo/
 ├── docs/
 │ └── Esquema_base_y_consultas_app.docx
 └── README.md
+
+```
+
 
 ``` yaml
 
