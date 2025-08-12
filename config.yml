@@ -1,0 +1,21 @@
+crear_pdfs:
+  fontsize: 12
+  margen_izquierdo: 50
+  margen_inferior: 50
+  margen_superior: 50
+
+
+database:
+  name: agilidad_entel # Este ya no se usa en las versiones nuevas
+
+decide_estrategia:
+  umbral_implicancia: 0.8
+  umbral_semejanza: 0.8
+
+extrae_ppt:
+  unidad: pixeles # Los valores posibles son centímetros, pulgadas y pixeles (asumiendo DPI 96)
+
+path_archivos: Informacion_Archivos/Informacion_Paginas
+file_mode: lista
+maximo_paginas: 100
+velocidad_maxima: 150000 #maximos tokens por minuto (para no exceder limite openai)
