@@ -11,7 +11,7 @@ Forma parte de un prototipo funcional desarrollado para un proyecto interno, y s
 
 El siguiente diagrama muestra de forma resumida el flujo de funcionamiento de la herramienta:
 
-![Flujo general](docs/imagenes/flujo_general.png)
+![Flujo general](docs/imagenes/diagrama_mermaid_gestion_de_informacion.png)
 
 ---
 
