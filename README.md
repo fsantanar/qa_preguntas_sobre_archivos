@@ -96,11 +96,9 @@ qa_presentaciones_llm_demo/
 ```
 
 
-``` yaml
 
 ---
 
 ## Video de demostración
 [Ver en YouTube](https://youtu.be/NBnySvRc61U)
 
-```
