@@ -1,3 +1,10 @@
 .DS_Store
-data/*
+# Ignora todo lo que esté dentro de data/
+data/**
+
+# Re-incluye las carpetas para poder re-incluir archivos específicos dentro
+!data/
+!data/**/
+
+# Re-incluye los .gitkeep (para versionar la estructura vacía)
 !data/**/.gitkeep
