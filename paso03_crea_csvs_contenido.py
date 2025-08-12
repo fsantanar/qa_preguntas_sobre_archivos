@@ -12,11 +12,11 @@ import json
 
 ti = time.time()
 
-path_entrada = f'PPTs_elementos'
-path_slides = f'PPTs_separados'
-path_salida = f'Informacion_Archivos'
-path_prompts = f'Prompts'
-path_originales = f'PPTs_originales'
+path_entrada = f'data/PPTs_elementos'
+path_slides = f'data/PPTs_separados'
+path_salida = f'data/Informacion_Archivos'
+path_prompts = f'data/Prompts'
+path_originales = f'data/PPTs_originales'
 nombres_archivos = os.popen(f'ls {path_entrada}').read().split()
 #Para eliminar archivos temporales
 nombres_archivos = [nombre for nombre in nombres_archivos if nombre[0]!='~'] 

@@ -8,7 +8,7 @@ import time
 import json
 ti = time.time()
 
-path_entrada = f'PPTs_elementos'
+path_entrada = f'data/PPTs_elementos'
 nombres_archivos = os.popen(f'ls {path_entrada}').read().split() # Sin extension porque son las carpetas
 #Para eliminar archivos temporales
 nombres_archivos = [nombre for nombre in nombres_archivos if nombre[0]!='~'] 

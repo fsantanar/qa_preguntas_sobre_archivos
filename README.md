@@ -92,9 +92,52 @@ qa_presentaciones_llm_demo/
 ├── docs/
 │ └── Esquema_base_y_consultas_app.docx
 └── README.md
+├── docs/data/
+│ ├── PPTs_originales/                      # PPTX de entrada (no se versionan)
+│ ├── PPTs_elementos/                       # elementos por slide (texto + imágenes)
+│ ├── PPTs_separados/                       # render de cada slide como imagen
+│ └── Informacion_Archivos/
+│   ├── Informacion_Paginas/              # descripción completa por slide (txt)
+│   ├── archivos.json                     # (generado) resumen preliminar por archivo
+│   └── paginas.json                      # (generado) resumen por slide
+└── Prompts/                              # prompts base y plantillas (opcional)
 
 ```
 
+## Carpetas de datos
+
+Carpetas de datos
+
+- data/PPTs_originales/: contiene los PPTX fuente que se procesan en el pipeline. No se incluyen en el repo por ser datos propietarios y/o pesados.
+
+- data/PPTs_elementos/: salidas de paso01; para cada slide se guarda la descripción técnica (slideNNN_content.txt) y las imágenes detectadas (slideNNN_imageMM.png).
+
+- data/PPTs_separados/: salidas de paso01; render de cada slide como imagen (slideN.png) para referencia visual.
+
+- data/Informacion_Archivos/Informacion_Paginas/: salidas de paso03; descripción completa por slide (Informacion_SlideNNN.txt) integrando contexto, texto técnico e imagen.
+
+- data/Informacion_Archivos/archivos.json: (generado por paso03) resumen preliminar por archivo para el retrieval a nivel documento.
+
+- data/Informacion_Archivos/paginas.json: (generado por paso03) resumen breve por slide para el retrieval a nivel página.
+
+- data/Prompts/: prompts base y plantillas reutilizables (por ejemplo, elegir archivo, elegir páginas, respuesta final). Útil para versionar el “prompt engineering” sin exponer claves.
+
+Nota: estas carpetas se incluyen vacías en el repo (con .gitkeep) solo para documentar la estructura esperada. Los archivos archivos.json y paginas.json se generan durante el proceso y no deben versionarse.
+
+## Documentación adicional
+
+En la carpeta `docs/` se incluye documentación técnica complementaria al código:
+
+- **Esquema_base_y_consultas_app.docx**: describe en detalle el flujo interno del sistema, incluyendo:
+  - La lógica completa de cada uno de los pasos (`paso01` a `paso06`).
+  - Cómo se generan y estructuran los datos intermedios.
+  - La lógica de selección de estrategia y contexto para responder preguntas.
+  - Notas sobre consideraciones técnicas, limitaciones actuales y posibles mejoras.
+
+Esta documentación es útil para:
+- Comprender a fondo la arquitectura del sistema.
+- Revisar cómo se conectan las diferentes etapas del pipeline.
+- Servir como base para implementar, mantener o escalar el sistema.
 
 
 ---

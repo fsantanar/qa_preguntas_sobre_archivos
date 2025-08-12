@@ -48,11 +48,16 @@ warnings.filterwarnings("ignore", category=FutureWarning, module="transformers.t
 # vale la pena cambiar precio por efectividad (y a lo mejor tiempo)
 # Analizar todo esquema de entrenamiento y prompt para tener resumen y ver donde se pede mejorar tiempo, ahorro en tokens y efectividad. 
 
+# Cargar la configuración desde el archivo YAML
+with open(f'config.yml', 'r') as file:
+    config = yaml.safe_load(file)
+
+
 
 # Obtener el path del archivo actual
 code_path = os.path.abspath(__file__)
-# Obtener el nombre de la base de datos a partir de la ruta
-db_name = os.path.basename(os.path.dirname(code_path)).split('archivos_')[1]
+# Obtener el nombre de la base de config.yml
+db_name = config['database']['name']
 # Obtener el nombre del archivo
 nombre_codigo = os.path.basename(code_path)
 

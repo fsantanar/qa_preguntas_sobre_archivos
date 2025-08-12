@@ -40,7 +40,7 @@ super_usuario_db = config['database']['super_usuario']
 super_usuario_pw_db = config['database']['super_usuario_pw']
 
 
-path_archivos = f'Informacion_Archivos/Informacion_Paginas'
+path_archivos = f'data/Informacion_Archivos/Informacion_Paginas'
 maximo_paginas = config['maximo_paginas']
 umbral_semejanza = config['decide_estrategia']['umbral_semejanza']
 umbral_implicancia = config['decide_estrategia']['umbral_implicancia']

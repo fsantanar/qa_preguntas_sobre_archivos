@@ -9,9 +9,9 @@ import numpy  as np
 
 ti = time.time()
 
-path_entrada = f'PPTs_originales'
-path_salida = f'PPTs_elementos'
-path_slides = f'PPTs_separados'
+path_entrada = f'data/PPTs_originales'
+path_salida = f'data/PPTs_elementos'
+path_slides = f'data/PPTs_separados'
 nombres_archivos = os.popen(f'ls {path_entrada}').read().split('\n')[:-1]
 #Para eliminar archivos temporales
 nombres_archivos = [nombre for nombre in nombres_archivos if nombre[0]!='~'] 

@@ -60,7 +60,7 @@ with open('config.yml', 'r') as file:
 
 db_name = config['database']['name']
 super_usuario_db = config['database']['super_usuario']
-path_entrada = f'Informacion_Archivos'
+path_entrada = f'data/Informacion_Archivos'
 
 # Conectar a la base de datos PostgreSQL
 conn = psycopg2.connect(
