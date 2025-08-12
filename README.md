@@ -65,6 +65,39 @@ El sistema sigue un pipeline de 6 pasos, más dos modos de aplicación para hace
 
 ---
 
+## Generación y Optimización de Prompts
+
+Una parte fundamental del desarrollo de esta herramienta fue el diseño y refinamiento de **prompts** para interactuar con modelos de lenguaje (LLMs) a través de la API de ChatGPT.  
+Este proceso se llevó a cabo de forma **iterativa y controlada**, con el objetivo de maximizar la precisión y utilidad de las respuestas para las consultas planteadas a partir de los documentos procesados.
+
+El flujo de trabajo incluyó:
+
+1. **Definición inicial del objetivo del prompt**  
+   - Identificación de la tarea principal (por ejemplo: resumir, clasificar, extraer información específica o responder preguntas complejas).
+   - Establecimiento de criterios de calidad para las respuestas (formato, extensión, nivel de detalle, tono).
+
+2. **Prototipado rápido y prueba de variantes**  
+   - Creación de múltiples versiones iniciales de un mismo prompt con ligeros cambios de redacción.
+   - Ejecución de pruebas sobre un conjunto de entradas representativas para evaluar consistencia.
+
+3. **Evaluación y métricas de calidad**  
+   - Análisis cualitativo: claridad de las respuestas, coherencia con la información fuente, ausencia de alucinaciones.  
+   - Ajuste de instrucciones para reducir ambigüedades y reforzar los criterios establecidos.
+
+4. **Aplicación de técnicas de ingeniería de prompts**  
+   - Uso de **instrucciones explícitas** (*explicit instructions*) para reducir interpretaciones erróneas.  
+   - Contextualización de la tarea (*context priming*) incorporando ejemplos representativos.  
+   - División en pasos (*chain-of-thought prompting*) para consultas complejas.  
+   - Refinamiento con **iteraciones progresivas**, donde cada nueva versión del prompt incorporaba aprendizajes de pruebas previas.
+
+5. **Documentación y consolidación**  
+   - Registro de los prompts finales en la carpeta `data/Prompts`, junto con ejemplos de entrada y salida.
+   - Establecimiento de un formato estándar para facilitar futuras modificaciones o adaptaciones a otros modelos.
+
+Este enfoque permitió que el sistema lograra **respuestas más consistentes, relevantes y alineadas con las necesidades de la aplicación**, asegurando un alto grado de reproducibilidad y capacidad de ajuste frente a nuevos requerimientos.
+
+---
+
 ## Configuración
 
 - Todos los parámetros editables están en `config.yml`:
@@ -123,6 +156,8 @@ Carpetas de datos
 - data/Prompts/: prompts base y plantillas reutilizables (por ejemplo, elegir archivo, elegir páginas, respuesta final). Útil para versionar el “prompt engineering” sin exponer claves.
 
 Nota: estas carpetas se incluyen vacías en el repo (con .gitkeep) solo para documentar la estructura esperada. Los archivos archivos.json y paginas.json se generan durante el proceso y no deben versionarse.
+
+---
 
 ## Documentación adicional
 
