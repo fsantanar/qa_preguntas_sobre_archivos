@@ -59,13 +59,14 @@ with open('config.yml', 'r') as file:
     config = yaml.safe_load(file)
 
 db_name = config['database']['name']
+super_usuario_db = config['database']['super_usuario']
 path_entrada = f'Informacion_Archivos'
 
 # Conectar a la base de datos PostgreSQL
 conn = psycopg2.connect(
     host="localhost",  # Reemplaza por tu host si es diferente
     database=db_name,  # Nombre de la base de datos
-    user="felipesantana"  # Usuario de PostgreSQL
+    user=super_usuario_db  # Usuario de PostgreSQL
 )
 
 cursor = conn.cursor()

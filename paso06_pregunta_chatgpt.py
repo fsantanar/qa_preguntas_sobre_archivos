@@ -36,6 +36,8 @@ warnings.filterwarnings("ignore", category=FutureWarning, module="transformers.t
 with open('config.yml', 'r') as file:
     config = yaml.safe_load(file)
 db_name = config['database']['name']
+super_usuario_db = config['database']['super_usuario']
+super_usuario_pw_db = config['database']['super_usuario_pw']
 
 
 path_archivos = f'Informacion_Archivos/Informacion_Paginas'
@@ -44,7 +46,7 @@ umbral_semejanza = config['decide_estrategia']['umbral_semejanza']
 umbral_implicancia = config['decide_estrategia']['umbral_implicancia']
 
 # Configurar la conexión a la base de datos PostgreSQL
-db = PostgresqlDatabase(db_name, user='felipesantana', password='', host='localhost')
+db = PostgresqlDatabase(db_name, user=super_usuario_db, password=super_usuario_pw_db, host='localhost')
 
 
 # Definir los modelos de Peewee correspondientes a las tablas

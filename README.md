@@ -3,85 +3,100 @@
 Este repositorio contiene los **scripts principales** de un sistema de **preguntas y respuestas** sobre documentos en formato presentación (PPTX).  
 Forma parte de un prototipo funcional desarrollado para un proyecto interno, y se publica para acompañar un [video de demostración](https://youtu.be/NBnySvRc61U) y como referencia en mi CV.
 
-⚠️ **Nota**: Este repositorio no incluye datos reales ni credenciales. Está pensado para mostrar la arquitectura y el código principal, no para ser ejecutado directamente.
+⚠️ **Nota**: Este repositorio no incluye datos reales ni credenciales. Está pensado para mostrar la arquitectura y el código principal, no para ser ejecutado directamente sin datos y configuración.
 
 ---
 
-## Flujo general
+## Flujo general y scripts
 
-El sistema sigue un pipeline de 6 pasos, más una aplicación de consulta:
+El sistema sigue un pipeline de 6 pasos, más dos modos de aplicación para hacer consultas (local y vía navegador):
 
 ### 1. `paso01_extraer_texto_de_ppts.py`
 - Lee las presentaciones originales (.pptx).
-- Por cada slide genera:
-  - **Descripción técnica** (`PPTs_elementos/{archivo}/slideNNN_content.txt`): lista de textos e imágenes con su posición relativa.
-  - **Imágenes de slide** (`PPTs_elementos/{archivo}/slideNNN_imageMM.png`).
-  - **Slide original renderizada** (`PPTs_separados/{archivo}/slideN.png`).
-- Observaciones: se guardan imágenes repetidas que se procesan en el siguiente paso.
+- **Extrae y describe** cada slide:
+  - Genera una **descripción técnica** (`PPTs_elementos/{archivo}/slideNNN_content.txt`) listando textos e imágenes con su posición relativa.
+  - Guarda **todas las imágenes detectadas** por slide (`PPTs_elementos/{archivo}/slideNNN_imageMM.png`).
+  - Guarda la **imagen renderizada** de cada slide (`PPTs_separados/{archivo}/slideN.png`).
+- Observaciones: también captura imágenes repetidas que se filtran en el siguiente paso.
 
 ### 2. `paso02_borra_imagenes_repetidas.py`
-- Elimina imágenes duplicadas para ahorrar espacio.
-- Genera un `imagenes_borradas.json` con el mapeo entre las borradas y sus originales.
+- Detecta imágenes duplicadas mediante hash.
+- Borra duplicados y genera `imagenes_borradas.json` con el mapeo de imágenes eliminadas y su original.
+- Optimiza el espacio de almacenamiento sin alterar la información útil.
 
 ### 3. `paso03_crea_csvs_contenido.py`
-- Genera los insumos para la base de datos:
-  - **Resumen preliminar del archivo** (LLM).
-  - **Descripción completa de cada slide** (LLM + imagen opcional).
-  - **Resumen breve de cada slide** (LLM).
-- Guarda:
+- **Procesa y enriquece** la información extraída para construir la base de conocimiento:
+  - Genera un **resumen preliminar del archivo** usando un modelo LLM.
+  - Para cada slide, crea una **descripción completa** (integrando contexto previo, descripción técnica y, opcionalmente, la imagen).
+  - Produce un **resumen breve** por slide, usado para búsquedas rápidas.
+- Salidas:
   - `Informacion_Archivos/Informacion_Paginas/{archivo}/Informacion_SlideNNN.txt`
-  - `Informacion_Archivos/paginas.json` (todas las slides).
-  - `Informacion_Archivos/archivos.json` (todos los archivos).
-- Coste aproximado: ~400k tokens por archivo de 80 slides.
+  - `Informacion_Archivos/paginas.json` (resúmenes de todas las slides).
+  - `Informacion_Archivos/archivos.json` (resúmenes de todos los archivos).
+- Controla el coste de tokens y tiempos de ejecución para lotes grandes.
 
 ### 4. `paso04_creates_database.py`
-- Crea la base de datos para almacenar:
-  - Archivos
-  - Páginas
-  - Respuestas
-  - Fallos
+- Crea la base de datos definida en `config.yml`.
+- No contiene credenciales hardcodeadas: el usuario/clave se leen de configuración o variables de entorno.
 
 ### 5. `paso05_creates_tables.py`
-- Define las tablas y sus columnas.
-- Esta estructura es usada para:
-  - Determinar estrategia de respuesta (pregunta nueva / tema encontrado / pregunta encontrada).
-  - Guardar contexto (archivo + páginas) y respuestas generadas.
+- Define las tablas:
+  - `archivos` y `paginas`: metadatos y resúmenes.
+  - `respuestas` y `fallos`: registro de interacciones exitosas y fallidas.
+- Estructura usada para:
+  - Determinar estrategia de respuesta (pregunta nueva, tema encontrado, pregunta encontrada).
+  - Guardar contexto (archivo y páginas) y resultados.
 
 ### 6. `paso06_pregunta_chatgpt.py`
-- Contiene funciones para interactuar con el modelo LLM.
-- Incluye prompts para:
+- Módulo para **hacer preguntas y obtener respuestas localmente** usando la base de conocimiento creada.
+- Implementa prompts para:
   - Elegir archivo relevante.
-  - Elegir páginas relevantes.
-  - Generar respuesta final.
+  - Seleccionar páginas relevantes.
+  - Generar la respuesta final con un modelo LLM.
 
 ### `chat_app_v05.py`
-- Aplicación que recibe preguntas y entrega respuestas según el flujo:
-  1. **Determinar estrategia**: reutilizar respuesta existente, reutilizar contexto, o buscar nuevo contexto.
+- Aplicación que expone el sistema vía navegador (interfaz web básica).
+- Flujo:
+  1. **Determinar estrategia**: reutilizar respuesta, reutilizar contexto o buscar contexto nuevo.
   2. **Determinar contexto**: seleccionar archivo y páginas relevantes.
-  3. **Generar respuesta**: a partir del contexto y la pregunta.
-- Si falla en alguna etapa, se registra en la tabla de `fallos`.
+  3. **Generar respuesta**: en base al contexto y la pregunta.
+- Registra fallos cuando no es posible completar el flujo.
+- Punto de partida para integrar el sistema en una página web.
 
 ---
 
 ## Configuración
 
-`config.yml` incluye parámetros clave como:
-- `decide_estrategia.umbral_implicancia` y `umbral_semejanza` para definir umbrales de decisión.
-- `path_archivos` y `file_mode` para rutas y modo de lectura.
-- `maximo_paginas` y `velocidad_maxima` para límites de procesamiento.
+- Todos los parámetros editables están en `config.yml`:
+  - Límites de tokens y velocidad.
+  - Umbrales de decisión para estrategias.
+  - Unidades de medida para extracción de PPT.
+  - Rutas de archivos.
+- No hay claves API ni credenciales sensibles en el código.
+- La clave del LLM (por ejemplo, OpenAI) se lee desde variables de entorno locales.
 
 ---
 
-## Notas
-- Este repo muestra únicamente los scripts y la configuración principal.
-- No incluye:
-  - Datos de entrada reales.
-  - Claves de API.
-  - Dependencias exactas.
-- El objetivo es **dar trazabilidad** a la demo y evidenciar la arquitectura y lógica del sistema.
+## Estructura del repositorio
+
+qa_presentaciones_llm_demo/
+├── paso01_extraer_texto_de_ppts.py
+├── paso02_borra_imagenes_repetidas.py
+├── paso03_crea_csvs_contenido.py
+├── paso04_creates_database.py
+├── paso05_creates_tables.py
+├── paso06_pregunta_chatgpt.py
+├── chat_app_v05.py
+├── config.yml
+├── docs/
+│ └── Esquema_base_y_consultas_app.docx
+└── README.md
+
+``` yaml
 
 ---
 
 ## Video de demostración
 [Ver en YouTube](https://youtu.be/NBnySvRc61U)
 
+```

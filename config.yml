@@ -6,7 +6,11 @@ crear_pdfs:
 
 
 database:
-  name: agilidad_entel # Este ya no se usa en las versiones nuevas
+  name: agilidad # Ejemplo de nombre de la base de datos
+  base_principal: postgres
+  super_usuario: postgres
+  super_usuario_pw: postgres
+
 
 decide_estrategia:
   umbral_implicancia: 0.8

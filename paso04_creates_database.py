@@ -7,6 +7,11 @@ with open('config.yml', 'r') as file:
     config = yaml.safe_load(file)
 
 nombre_db = config['database']['name']
+base_principal_db = config['database']['base_principal']
+super_usuario_db = config['database']['super_usuario']
+
+
+
 
 def crear_base_datos(nombre_db):
     # Solicitar confirmación del usuario
@@ -20,13 +25,13 @@ def crear_base_datos(nombre_db):
         return
 
     # Borrar la base de datos si existe
-    subprocess.run(['psql', '-U', 'felipesantana', '-d', 'postgres', '-c',
+    subprocess.run(['psql', '-U', super_usuario_db, '-d', base_principal_db, '-c',
                     f"DROP DATABASE IF EXISTS {nombre_db};"],
                     check=False)
 
     # Intentar crear la base de datos
     try:
-        resultado = subprocess.run(['psql', '-U', 'felipesantana', '-d', 'postgres', '-c',
+        resultado = subprocess.run(['psql', '-U', super_usuario_db, '-d', base_principal_db, '-c',
                                     f"CREATE DATABASE {nombre_db};"],
                                     text=True, capture_output=True, check=False)
         if "already exists" in resultado.stderr:
